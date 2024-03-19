@@ -31,16 +31,12 @@ def divar(phone):
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
     "Accept-Language":"en-US,en;q=0.5"}
     data = {"cellphone":"phone"}
-    try:
-        response = requests.post("https://api.divar.ir/v5/auth/authenticate", headers=divarh , data=data , proxies=proxy)
-        if response.status_code == 200:
-            print("Success!")
-            print("Response:", response.text)
+    if "OK" in divarR.text:
+            print ("sended sms:)")
         else:
-            print("Error! Status code:", response.status_code)
-    except Exception as e:
-            print("An error occurred:", e)
-
+            print ("Error!")
+    except:
+        print ("Error!")
     
 def shad(phone):
     #shad api
